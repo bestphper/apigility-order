@@ -48,6 +48,7 @@ class OrderService
         $order->setStatus($order::STATUS_WAIT_TO_PAY);
         $order->setRefundStatus($order::REFUND_STATUS_NONE);
         $this->em->persist($order);
+        $this->em->flush();
 
         return $order;
     }
@@ -76,6 +77,8 @@ class OrderService
 
         $order->setTotal($price*$quantity);
 
+        $this->em->flush();
+
         return $orderDetail;
     }
 
@@ -97,5 +100,32 @@ class OrderService
         } while (count($orders));
 
         return $series_number;
+    }
+
+    /**
+     * 获取一个订单
+     * @param $order_id
+     * @return \ApigilityOrder\DoctrineEntity\Order
+     * @throws \Exception
+     */
+    public function getOrder($order_id)
+    {
+        $order = $this->em->find('ApigilityOrder\DoctrineEntity\Order', $order_id);
+        if (empty($order)) throw new \Exception(404, '订单不存在');
+
+        return $order;
+    }
+
+    /**
+     * 获取订单列表
+     * @return DoctrinePaginatorAdapter
+     */
+    public function getOrders($params)
+    {
+        $qb = new QueryBuilder($this->em);
+        $qb->select('o')->from('ApigilityOrder\DoctrineEntity\Order', 'o');
+
+        $doctrine_paginator = new DoctrineToolPaginator($qb->getQuery());
+        return new DoctrinePaginatorAdapter($doctrine_paginator);
     }
 }

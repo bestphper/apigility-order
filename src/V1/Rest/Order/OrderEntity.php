@@ -1,45 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: figo-007
- * Date: 2016/11/29
- * Time: 17:18
- */
-namespace ApigilityOrder\DoctrineEntity;
+namespace ApigilityOrder\V1\Rest\Order;
 
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\OneToOne;
-use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\Common\Collections\ArrayCollection;
+use ApigilityOrder\DoctrineEntity\OrderDetail;
+use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 use ApigilityUser\DoctrineEntity\User;
+use ApigilityUser\V1\Rest\User\UserEntity;
+use ApigilityOrder\V1\Rest\OrderDetail\OrderDetailEntity;
 
-/**
- * Class Order
- * @package ApigilityO2oServiceTrade\DoctrineEntity
- * @Entity @Table(name="apigilityorder_order")
- */
-class Order
+class OrderEntity
 {
-    const STATUS_WAIT_TO_PAY = 1;   // 等待付款
-    const STATUS_CANCELED = 2;      // 已取消
-    const STATUS_PAYED = 3;         // 已支付
-    const STATUS_WAIT_TO_SEND = 4;  // 等待发货
-    const STATUS_SENT = 5;          // 已发货
-    const STATUS_SENT_BACK = 6;     // 货已回发
-    const STATUS_FINISH = 7;        // 已完成
-
-    const REFUND_STATUS_NONE = 1;   // 没有进入退款流程
-    const REFUND_STATUS_REQUESTED = 2; // 已申请退款
-    const REFUND_STATUS_REJECTED = 3;  // 已拒绝退款
-    const REFUND_STATUS_ACCEPTED = 4;  // 已同意退款
-    const REFUND_STATUS_DONE = 5;      // 已退款
-
     /**
      * @Id @Column(type="integer")
      * @GeneratedValue
@@ -124,9 +93,12 @@ class Order
      */
     protected $orderDetails;
 
-    public function __construct()
+    private $hy;
+
+    public function __construct(\ApigilityOrder\DoctrineEntity\Order $order)
     {
-        $this->orderDetails = new ArrayCollection();
+        $this->hy = new ClassMethodsHydrator();
+        $this->hy->hydrate($this->hy->extract($order), $this);
     }
 
     public function setId($id)
@@ -225,7 +197,11 @@ class Order
 
     public function getCreateTime()
     {
-        return $this->create_time;
+        if ($this->create_time instanceof \DateTime) {
+            return $this->create_time->getTimestamp();
+        } else {
+            return $this->create_time;
+        }
     }
 
     public function setPayTime($pay_time)
@@ -236,7 +212,11 @@ class Order
 
     public function getPayTime()
     {
-        return $this->pay_time;
+        if ($this->pay_time instanceof \DateTime) {
+            return $this->pay_time->getTimestamp();
+        } else {
+            return $this->pay_time;
+        }
     }
 
     public function setUser(User $user)
@@ -247,7 +227,11 @@ class Order
 
     public function getUser()
     {
-        return $this->user;
+        if ($this->user instanceof User) {
+            return $this->hy->extract(new UserEntity($this->user));
+        } else {
+            return $this->user;
+        }
     }
 
     public function setOrderDetails($orderDetails)
@@ -263,6 +247,11 @@ class Order
 
     public function getOrderDetails()
     {
-        return $this->orderDetails;
+        $data = array();
+        foreach ($this->orderDetails as $orderDetail) {
+            $data[] = $this->hy->extract(new OrderDetailEntity($orderDetail));
+        }
+
+        return $data;
     }
 }
