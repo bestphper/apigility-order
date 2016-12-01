@@ -111,7 +111,7 @@ class OrderService
     public function getOrder($order_id)
     {
         $order = $this->em->find('ApigilityOrder\DoctrineEntity\Order', $order_id);
-        if (empty($order)) throw new \Exception(404, '订单不存在');
+        if (empty($order)) throw new \Exception('订单不存在', 404);
 
         return $order;
     }
@@ -128,4 +128,22 @@ class OrderService
         $doctrine_paginator = new DoctrineToolPaginator($qb->getQuery());
         return new DoctrinePaginatorAdapter($doctrine_paginator);
     }
+
+    /**
+     * 根据订单序列号找一个订单
+     *
+     * @param $order_sn
+     * @return \ApigilityOrder\DoctrineEntity\Order
+     * @throws \Exception
+     */
+    public function getOrderBySN($order_sn)
+    {
+        $orders = $this->em->getRepository('ApigilityOrder\DoctrineEntity\Order')->findBy([
+            'series_number' => $order_sn
+        ]);
+
+        if (count($orders)) return $orders[0];
+        else throw new \Exception('订单不存在', 404);
+    }
+
 }
