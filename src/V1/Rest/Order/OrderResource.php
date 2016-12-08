@@ -1,11 +1,11 @@
 <?php
 namespace ApigilityOrder\V1\Rest\Order;
 
+use ApigilityCatworkFoundation\Base\ApigilityResource;
 use ZF\ApiProblem\ApiProblem;
-use ZF\Rest\AbstractResourceListener;
 use Zend\ServiceManager\ServiceManager;
 
-class OrderResource extends AbstractResourceListener
+class OrderResource extends ApigilityResource
 {
     /**
      * @var \ApigilityOrder\Service\OrderService
@@ -14,40 +14,8 @@ class OrderResource extends AbstractResourceListener
 
     public function __construct(ServiceManager $services)
     {
+        parent::__construct($services);
         $this->orderService = $services->get('ApigilityOrder\Service\OrderService');
-    }
-
-    /**
-     * Create a resource
-     *
-     * @param  mixed $data
-     * @return ApiProblem|mixed
-     */
-    public function create($data)
-    {
-        return new ApiProblem(405, 'The POST method has not been defined');
-    }
-
-    /**
-     * Delete a resource
-     *
-     * @param  mixed $id
-     * @return ApiProblem|mixed
-     */
-    public function delete($id)
-    {
-        return new ApiProblem(405, 'The DELETE method has not been defined for individual resources');
-    }
-
-    /**
-     * Delete a collection, or members of a collection
-     *
-     * @param  mixed $data
-     * @return ApiProblem|mixed
-     */
-    public function deleteList($data)
-    {
-        return new ApiProblem(405, 'The DELETE method has not been defined for collections');
     }
 
     /**
@@ -59,7 +27,7 @@ class OrderResource extends AbstractResourceListener
     public function fetch($id)
     {
         try {
-            return new OrderEntity($this->orderService->getOrder($id));
+            return new OrderEntity($this->orderService->getOrder($id), $this->serviceManager);
         } catch (\Exception $exception) {
             return new ApiProblem($exception->getCode(), $exception->getMessage());
         }
@@ -74,55 +42,10 @@ class OrderResource extends AbstractResourceListener
     public function fetchAll($params = [])
     {
         try {
-            return new OrderCollection($this->orderService->getOrders($params));
+            return new OrderCollection($this->orderService->getOrders($params), $this->serviceManager);
         } catch (\Exception $exception) {
             return new ApiProblem($exception->getCode(), $exception->getMessage());
         }
     }
 
-    /**
-     * Patch (partial in-place update) a resource
-     *
-     * @param  mixed $id
-     * @param  mixed $data
-     * @return ApiProblem|mixed
-     */
-    public function patch($id, $data)
-    {
-        return new ApiProblem(405, 'The PATCH method has not been defined for individual resources');
-    }
-
-    /**
-     * Patch (partial in-place update) a collection or members of a collection
-     *
-     * @param  mixed $data
-     * @return ApiProblem|mixed
-     */
-    public function patchList($data)
-    {
-        return new ApiProblem(405, 'The PATCH method has not been defined for collections');
-    }
-
-    /**
-     * Replace a collection or members of a collection
-     *
-     * @param  mixed $data
-     * @return ApiProblem|mixed
-     */
-    public function replaceList($data)
-    {
-        return new ApiProblem(405, 'The PUT method has not been defined for collections');
-    }
-
-    /**
-     * Update a resource
-     *
-     * @param  mixed $id
-     * @param  mixed $data
-     * @return ApiProblem|mixed
-     */
-    public function update($id, $data)
-    {
-        return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
-    }
 }

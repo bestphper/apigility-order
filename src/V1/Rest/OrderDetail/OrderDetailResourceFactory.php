@@ -5,6 +5,6 @@ class OrderDetailResourceFactory
 {
     public function __invoke($services)
     {
-        return new OrderDetailResource();
+        return new OrderDetailResource($services);
     }
 }

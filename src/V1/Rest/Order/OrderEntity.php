@@ -1,13 +1,16 @@
 <?php
 namespace ApigilityOrder\V1\Rest\Order;
 
+use ApigilityCatworkFoundation\Base\ApigilityEntity;
+use ApigilityCatworkFoundation\Base\ApigilityObjectStorageAwareEntity;
 use ApigilityOrder\DoctrineEntity\OrderDetail;
 use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 use ApigilityUser\DoctrineEntity\User;
 use ApigilityUser\V1\Rest\User\UserEntity;
 use ApigilityOrder\V1\Rest\OrderDetail\OrderDetailEntity;
+use Zend\ServiceManager\ServiceManager;
 
-class OrderEntity
+class OrderEntity extends ApigilityObjectStorageAwareEntity
 {
     /**
      * @Id @Column(type="integer")
@@ -93,13 +96,6 @@ class OrderEntity
      */
     protected $orderDetails;
 
-    private $hy;
-
-    public function __construct(\ApigilityOrder\DoctrineEntity\Order $order)
-    {
-        $this->hy = new ClassMethodsHydrator();
-        $this->hy->hydrate($this->hy->extract($order), $this);
-    }
 
     public function setId($id)
     {
@@ -228,7 +224,7 @@ class OrderEntity
     public function getUser()
     {
         if ($this->user instanceof User) {
-            return $this->hy->extract(new UserEntity($this->user));
+            return $this->hydrator->extract(new UserEntity($this->user, $this->serviceManager));
         } else {
             return $this->user;
         }
@@ -247,11 +243,6 @@ class OrderEntity
 
     public function getOrderDetails()
     {
-        $data = array();
-        foreach ($this->orderDetails as $orderDetail) {
-            $data[] = $this->hy->extract(new OrderDetailEntity($orderDetail));
-        }
-
-        return $data;
+        $this->getJsonValueFromDoctrineCollection($this->orderDetails, OrderDetailEntity::class);
     }
 }

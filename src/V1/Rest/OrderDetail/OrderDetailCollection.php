@@ -1,8 +1,9 @@
 <?php
 namespace ApigilityOrder\V1\Rest\OrderDetail;
 
-use Zend\Paginator\Paginator;
+use ApigilityCatworkFoundation\Base\ApigilityCollection;
 
-class OrderDetailCollection extends Paginator
+class OrderDetailCollection extends ApigilityCollection
 {
+    protected $itemType = OrderDetailEntity::class;
 }

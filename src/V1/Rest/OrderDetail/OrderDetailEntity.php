@@ -1,9 +1,9 @@
 <?php
 namespace ApigilityOrder\V1\Rest\OrderDetail;
 
-use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
+use ApigilityCatworkFoundation\Base\ApigilityEntity;
 
-class OrderDetailEntity
+class OrderDetailEntity extends ApigilityEntity
 {
     /**
      * @Id @Column(type="integer")
@@ -53,14 +53,6 @@ class OrderDetailEntity
      * @JoinColumn(name="order_id", referencedColumnName="id")
      */
     protected $order;
-
-    private $hy;
-
-    public function __construct(\ApigilityOrder\DoctrineEntity\OrderDetail $orderDetail)
-    {
-        $this->hy = new ClassMethodsHydrator();
-        $this->hy->hydrate($this->hy->extract($orderDetail), $this);
-    }
 
     public function setId($id)
     {
