@@ -1,9 +1,8 @@
 <?php
 namespace ApigilityOrder\V1\Rest\OrderPayment;
 
-use ApigilityCatworkFoundation\Base\ApigilityEntity;
 
-class OrderPaymentEntity extends ApigilityEntity
+class OrderPaymentEntity
 {
     const PAYMENT_TYPE_ALIPAY = 1;
     const PAYMENT_TYPE_WXPAY = 2;
