@@ -36,6 +36,8 @@ class Alipay implements PaymentServiceAdapterInterface
 
     private function getConfig()
     {
+        $alipay_config['log_path'] =  $this->config['log_path'];
+
         $alipay_config['partner'] = $this->config['partner'];
 
         $alipay_config['seller_id'] = $this->config['seller_id'];
@@ -66,7 +68,7 @@ class Alipay implements PaymentServiceAdapterInterface
 
     private function makeSignData($order_number, $order_name, $total, $order_description)
     {
-        $alipay_config = self::getConfig();
+        $alipay_config = $this->getConfig();
 
         require_once dirname(__FILE__).'/../../../vendor/Alipay/alipay_submit.class.php';
 
@@ -75,8 +77,8 @@ class Alipay implements PaymentServiceAdapterInterface
             "partner" => trim($alipay_config['partner']),
             "seller_id" => trim($alipay_config['partner']),
             "payment_type" => '1',
-            "notify_url" => $this->http_url() . '/order/payment/notify/alipay',
-            "return_url" => $this->http_url() . '/order/payment/notify/alipay',
+            "notify_url" => $this->http_url() . '/order/payment-notification-from-alipay',
+            "return_url" => $this->http_url() . '/order/payment-notification-from-alipay',
             "out_trade_no" => $order_number,
             "subject" => $order_name,
             "total_fee" => $total,

@@ -51,7 +51,7 @@ class Wxpay implements PaymentServiceAdapterInterface
         $input->SetBody(mb_substr($order_name,0,50,'utf-8'));
         $input->SetOut_trade_no($order_number);
         $input->SetTotal_fee($total*100);
-        $input->SetNotify_url($this->http_url().'/order/payment/notify/wxpay');
+        $input->SetNotify_url($this->http_url().'/order/payment-notification-from-wxpay');
         $input->SetTrade_type('APP');
         $response = $wechatAPI->unifiedOrder($input, $timeOut = 15);
 

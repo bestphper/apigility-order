@@ -5,6 +5,8 @@ return [
             \ApigilityOrder\V1\Rest\Order\OrderResource::class => \ApigilityOrder\V1\Rest\Order\OrderResourceFactory::class,
             \ApigilityOrder\V1\Rest\OrderDetail\OrderDetailResource::class => \ApigilityOrder\V1\Rest\OrderDetail\OrderDetailResourceFactory::class,
             \ApigilityOrder\V1\Rest\OrderPayment\OrderPaymentResource::class => \ApigilityOrder\V1\Rest\OrderPayment\OrderPaymentResourceFactory::class,
+            \ApigilityOrder\V1\Rest\PaymentNotificationFromAlipay\PaymentNotificationFromAlipayResource::class => \ApigilityOrder\V1\Rest\PaymentNotificationFromAlipay\PaymentNotificationFromAlipayResourceFactory::class,
+            \ApigilityOrder\V1\Rest\PaymentNotificationFromWxpay\PaymentNotificationFromWxpayResource::class => \ApigilityOrder\V1\Rest\PaymentNotificationFromWxpay\PaymentNotificationFromWxpayResourceFactory::class,
         ],
     ],
     'router' => [
@@ -36,6 +38,24 @@ return [
                     ],
                 ],
             ],
+            'apigility-order.rest.payment-notification-from-alipay' => [
+                'type' => 'Segment',
+                'options' => [
+                    'route' => '/order/payment-notification-from-alipay[/:payment_notification_from_alipay_id]',
+                    'defaults' => [
+                        'controller' => 'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromAlipay\\Controller',
+                    ],
+                ],
+            ],
+            'apigility-order.rest.payment-notification-from-wxpay' => [
+                'type' => 'Segment',
+                'options' => [
+                    'route' => '/order/payment-notification-from-wxpay[/:payment_notification_from_wxpay_id]',
+                    'defaults' => [
+                        'controller' => 'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromWxpay\\Controller',
+                    ],
+                ],
+            ],
         ],
     ],
     'zf-versioning' => [
@@ -43,6 +63,8 @@ return [
             0 => 'apigility-order.rest.order',
             1 => 'apigility-order.rest.order-detail',
             2 => 'apigility-order.rest.order-payment',
+            3 => 'apigility-order.rest.payment-notification-from-alipay',
+            4 => 'apigility-order.rest.payment-notification-from-wxpay',
         ],
     ],
     'zf-rest' => [
@@ -102,12 +124,46 @@ return [
             'collection_class' => \ApigilityOrder\V1\Rest\OrderPayment\OrderPaymentCollection::class,
             'service_name' => 'OrderPayment',
         ],
+        'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromAlipay\\Controller' => [
+            'listener' => \ApigilityOrder\V1\Rest\PaymentNotificationFromAlipay\PaymentNotificationFromAlipayResource::class,
+            'route_name' => 'apigility-order.rest.payment-notification-from-alipay',
+            'route_identifier_name' => 'payment_notification_from_alipay_id',
+            'collection_name' => 'payment_notification_from_alipay',
+            'entity_http_methods' => [],
+            'collection_http_methods' => [
+                0 => 'POST',
+            ],
+            'collection_query_whitelist' => [],
+            'page_size' => 25,
+            'page_size_param' => null,
+            'entity_class' => \ApigilityOrder\V1\Rest\PaymentNotificationFromAlipay\PaymentNotificationFromAlipayEntity::class,
+            'collection_class' => \ApigilityOrder\V1\Rest\PaymentNotificationFromAlipay\PaymentNotificationFromAlipayCollection::class,
+            'service_name' => 'PaymentNotificationFromAlipay',
+        ],
+        'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromWxpay\\Controller' => [
+            'listener' => \ApigilityOrder\V1\Rest\PaymentNotificationFromWxpay\PaymentNotificationFromWxpayResource::class,
+            'route_name' => 'apigility-order.rest.payment-notification-from-wxpay',
+            'route_identifier_name' => 'payment_notification_from_wxpay_id',
+            'collection_name' => 'payment_notification_from_wxpay',
+            'entity_http_methods' => [],
+            'collection_http_methods' => [
+                0 => 'POST',
+            ],
+            'collection_query_whitelist' => [],
+            'page_size' => 25,
+            'page_size_param' => null,
+            'entity_class' => \ApigilityOrder\V1\Rest\PaymentNotificationFromWxpay\PaymentNotificationFromWxpayEntity::class,
+            'collection_class' => \ApigilityOrder\V1\Rest\PaymentNotificationFromWxpay\PaymentNotificationFromWxpayCollection::class,
+            'service_name' => 'PaymentNotificationFromWxpay',
+        ],
     ],
     'zf-content-negotiation' => [
         'controllers' => [
             'ApigilityOrder\\V1\\Rest\\Order\\Controller' => 'HalJson',
             'ApigilityOrder\\V1\\Rest\\OrderDetail\\Controller' => 'HalJson',
             'ApigilityOrder\\V1\\Rest\\OrderPayment\\Controller' => 'HalJson',
+            'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromAlipay\\Controller' => 'HalJson',
+            'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromWxpay\\Controller' => 'HalJson',
         ],
         'accept_whitelist' => [
             'ApigilityOrder\\V1\\Rest\\Order\\Controller' => [
@@ -125,6 +181,16 @@ return [
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ],
+            'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromAlipay\\Controller' => [
+                0 => 'application/vnd.apigility-order.v1+json',
+                1 => 'application/hal+json',
+                2 => 'application/json',
+            ],
+            'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromWxpay\\Controller' => [
+                0 => 'application/vnd.apigility-order.v1+json',
+                1 => 'application/hal+json',
+                2 => 'application/json',
+            ],
         ],
         'content_type_whitelist' => [
             'ApigilityOrder\\V1\\Rest\\Order\\Controller' => [
@@ -136,6 +202,14 @@ return [
                 1 => 'application/json',
             ],
             'ApigilityOrder\\V1\\Rest\\OrderPayment\\Controller' => [
+                0 => 'application/vnd.apigility-order.v1+json',
+                1 => 'application/json',
+            ],
+            'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromAlipay\\Controller' => [
+                0 => 'application/vnd.apigility-order.v1+json',
+                1 => 'application/json',
+            ],
+            'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromWxpay\\Controller' => [
                 0 => 'application/vnd.apigility-order.v1+json',
                 1 => 'application/json',
             ],
@@ -177,6 +251,30 @@ return [
                 'entity_identifier_name' => 'order_id',
                 'route_name' => 'apigility-order.rest.order-payment',
                 'route_identifier_name' => 'order_payment_id',
+                'is_collection' => true,
+            ],
+            \ApigilityOrder\V1\Rest\PaymentNotificationFromAlipay\PaymentNotificationFromAlipayEntity::class => [
+                'entity_identifier_name' => 'id',
+                'route_name' => 'apigility-order.rest.payment-notification-from-alipay',
+                'route_identifier_name' => 'payment_notification_from_alipay_id',
+                'hydrator' => \Zend\Hydrator\ClassMethods::class,
+            ],
+            \ApigilityOrder\V1\Rest\PaymentNotificationFromAlipay\PaymentNotificationFromAlipayCollection::class => [
+                'entity_identifier_name' => 'id',
+                'route_name' => 'apigility-order.rest.payment-notification-from-alipay',
+                'route_identifier_name' => 'payment_notification_from_alipay_id',
+                'is_collection' => true,
+            ],
+            \ApigilityOrder\V1\Rest\PaymentNotificationFromWxpay\PaymentNotificationFromWxpayEntity::class => [
+                'entity_identifier_name' => 'id',
+                'route_name' => 'apigility-order.rest.payment-notification-from-wxpay',
+                'route_identifier_name' => 'payment_notification_from_wxpay_id',
+                'hydrator' => \Zend\Hydrator\ClassMethods::class,
+            ],
+            \ApigilityOrder\V1\Rest\PaymentNotificationFromWxpay\PaymentNotificationFromWxpayCollection::class => [
+                'entity_identifier_name' => 'id',
+                'route_name' => 'apigility-order.rest.payment-notification-from-wxpay',
+                'route_identifier_name' => 'payment_notification_from_wxpay_id',
                 'is_collection' => true,
             ],
         ],
