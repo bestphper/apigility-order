@@ -72,13 +72,15 @@ class Alipay implements PaymentServiceAdapterInterface
 
         require_once dirname(__FILE__).'/../../../vendor/Alipay/alipay_submit.class.php';
 
+        $notify_url = empty($alipay_config['notify_url']) ? $this->http_url() . '/order/payment-notification-from-alipay' : $alipay_config['notify_url'];
+
         $parameter = array(
             "service" => "mobile.securitypay.pay",
             "partner" => trim($alipay_config['partner']),
             "seller_id" => trim($alipay_config['partner']),
             "payment_type" => '1',
-            "notify_url" => $this->http_url() . '/order/payment-notification-from-alipay',
-            "return_url" => $this->http_url() . '/order/payment-notification-from-alipay',
+            "notify_url" => $notify_url,
+            "return_url" => $notify_url,
             "out_trade_no" => $order_number,
             "subject" => $order_name,
             "total_fee" => $total,
