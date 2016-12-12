@@ -41,7 +41,7 @@ return [
             'apigility-order.rest.payment-notification-from-alipay' => [
                 'type' => 'Segment',
                 'options' => [
-                    'route' => '/order/payment-notification-from-alipay[/:payment_notification_from_alipay_id]',
+                    'route' => '/order/paymentnotificationfromalipay[/:payment_notification_from_alipay_id]',
                     'defaults' => [
                         'controller' => 'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromAlipay\\Controller',
                     ],
