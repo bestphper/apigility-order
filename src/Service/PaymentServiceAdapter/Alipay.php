@@ -37,6 +37,7 @@ class Alipay implements PaymentServiceAdapterInterface
     private function getConfig()
     {
         $alipay_config['log_path'] =  $this->config['log_path'];
+        $alipay_config['notify_url'] =  $this->config['notify_url'];
 
         $alipay_config['partner'] = $this->config['partner'];
 
