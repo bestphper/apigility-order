@@ -32,7 +32,7 @@ return [
             'apigility-order.rest.order-payment' => [
                 'type' => 'Segment',
                 'options' => [
-                    'route' => '/order-payment[/:order_payment_id]',
+                    'route' => '/order/order-payment[/:order_payment_id]',
                     'defaults' => [
                         'controller' => 'ApigilityOrder\\V1\\Rest\\OrderPayment\\Controller',
                     ],
