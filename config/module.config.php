@@ -41,7 +41,7 @@ return [
             'apigility-order.rest.payment-notification-from-alipay' => [
                 'type' => 'Segment',
                 'options' => [
-                    'route' => '/order/paymentnotificationfromalipay[/:payment_notification_from_alipay_id]',
+                    'route' => '/order/payment-notification-from-alipay[/:payment_notification_from_alipay_id]',
                     'defaults' => [
                         'controller' => 'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromAlipay\\Controller',
                     ],
@@ -185,6 +185,7 @@ return [
                 0 => 'application/vnd.apigility-order.v1+json',
                 1 => 'application/hal+json',
                 2 => 'application/json',
+                3 => 'application/x-www-form-urlencoded',
             ],
             'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromWxpay\\Controller' => [
                 0 => 'application/vnd.apigility-order.v1+json',
@@ -208,6 +209,7 @@ return [
             'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromAlipay\\Controller' => [
                 0 => 'application/vnd.apigility-order.v1+json',
                 1 => 'application/json',
+                2 => 'application/x-www-form-urlencoded',
             ],
             'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromWxpay\\Controller' => [
                 0 => 'application/vnd.apigility-order.v1+json',
