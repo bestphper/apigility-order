@@ -15,7 +15,8 @@ return [
                 'ali_public_key_path'=>'',
                 'ssl_cacert_path'=>'',
                 'log_path'=>'',
-                'notify_url'=>''
+                'notify_url'=>'',
+                'transport'=>'http'
             ],
             'wxpay'=>[
                 'APPID'=>'',
