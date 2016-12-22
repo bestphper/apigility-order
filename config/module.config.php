@@ -218,6 +218,7 @@ return [
                 1 => 'application/json',
                 2 => 'application/x-www-form-urlencoded',
                 3 => 'multipart/form-data',
+                4 => 'text/xml',
             ],
         ],
     ],
