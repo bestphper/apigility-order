@@ -191,6 +191,8 @@ return [
                 0 => 'application/vnd.apigility-order.v1+json',
                 1 => 'application/hal+json',
                 2 => 'application/json',
+                3 => 'application/x-www-form-urlencoded',
+                4 => 'text/html',
             ],
         ],
         'content_type_whitelist' => [
@@ -214,6 +216,7 @@ return [
             'ApigilityOrder\\V1\\Rest\\PaymentNotificationFromWxpay\\Controller' => [
                 0 => 'application/vnd.apigility-order.v1+json',
                 1 => 'application/json',
+                2 => 'application/x-www-form-urlencoded',
             ],
         ],
     ],
