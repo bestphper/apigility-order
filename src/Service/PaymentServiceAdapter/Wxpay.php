@@ -89,6 +89,7 @@ class Wxpay implements PaymentServiceAdapterInterface
             \Log::DEBUG("begin notify");
             \Log::DEBUG($GLOBALS['HTTP_RAW_POST_DATA']);
             $notify = new \PayNotifyCallBack();
+            $notify->setPaymentType($this->getPaymentType());
             $notify->setCallback($callback);
             $rs = $notify->Handle(false);
 
