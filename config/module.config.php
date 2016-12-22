@@ -217,6 +217,7 @@ return [
                 0 => 'application/vnd.apigility-order.v1+json',
                 1 => 'application/json',
                 2 => 'application/x-www-form-urlencoded',
+                3 => 'multipart/form-data',
             ],
         ],
     ],
