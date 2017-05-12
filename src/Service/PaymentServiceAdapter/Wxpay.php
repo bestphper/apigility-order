@@ -45,13 +45,15 @@ class Wxpay implements PaymentServiceAdapterInterface
         $WxPayConfig_Data = $this->config;
         require_once dirname(__FILE__).'/../../../vendor/Wxpay/bootstrap.php';
 
+        $notify_url = empty($WxPayConfig_Data['notify_url']) ? $this->http_url() . '/order/payment-notification-from-wxpay' : $WxPayConfig_Data['notify_url'];
+
         $wechatAPI = new \WxPayApi();
 
         $input = new \WxPayUnifiedOrder();
         $input->SetBody(mb_substr($order_name,0,50,'utf-8'));
         $input->SetOut_trade_no($order_number);
         $input->SetTotal_fee($total*100);
-        $input->SetNotify_url($this->http_url().'/order/payment-notification-from-wxpay');
+        $input->SetNotify_url($notify_url);
         $input->SetTrade_type('APP');
         $response = $wechatAPI->unifiedOrder($input, $timeOut = 15);
 
@@ -87,6 +89,7 @@ class Wxpay implements PaymentServiceAdapterInterface
             \Log::DEBUG("begin notify");
             \Log::DEBUG($GLOBALS['HTTP_RAW_POST_DATA']);
             $notify = new \PayNotifyCallBack();
+            $notify->setPaymentType($this->getPaymentType());
             $notify->setCallback($callback);
             $rs = $notify->Handle(false);
 

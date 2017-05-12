@@ -65,13 +65,16 @@ class PaymentService extends ApigilityEventAwareObject
         $this->paymentAdapter->handleNotification(function ($order_sn, $payment_type, $payment_sn) use ($orderService, $em){
             // 如果支付成功，这里将处理订单状态
             $order = $orderService->getOrderBySN($order_sn);
-            $order->setStatus($order::STATUS_PAYED);
-            $order->setPaymentSeriesNumber($payment_sn);
-            $order->setPaymentType($payment_type);
-            $order->setPayTime(new \DateTime());
-            $em->flush();
 
-            $this->getEventManager()->trigger(self::EVENT_PAY_SUCCESS, $this, ['order' => $order]);
+            if ((int)$order->getStatus() == $order::STATUS_WAIT_TO_PAY) {
+                $order->setStatus($order::STATUS_PAYED);
+                $order->setPaymentSeriesNumber($payment_sn);
+                $order->setPaymentType($payment_type);
+                $order->setPayTime(new \DateTime());
+                $em->flush();
+
+                $this->getEventManager()->trigger(self::EVENT_PAY_SUCCESS, $this, ['order' => $order]);
+            }
         });
     }
 }
