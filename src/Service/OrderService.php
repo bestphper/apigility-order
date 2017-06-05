@@ -38,14 +38,14 @@ class OrderService
      * @param User $user
      * @return DoctrineEntity\Order
      */
-    public function createOrder($title, User $user)
+    public function createOrder($title, User $user, $status = DoctrineEntity\Order::STATUS_WAIT_TO_PAY)
     {
         $order = new DoctrineEntity\Order();
         $order->setTitle($title)->setUser($user);
         $order->setSeriesNumber($this->generateOrderSeriesNumber());
         $order->setTotal(0.00);
         $order->setCreateTime(new \DateTime());
-        $order->setStatus($order::STATUS_WAIT_TO_PAY);
+        $order->setStatus($status);
         $order->setRefundStatus($order::REFUND_STATUS_NONE);
         $this->em->persist($order);
         $this->em->flush();
