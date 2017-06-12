@@ -145,5 +145,22 @@ class OrderService
         if (count($orders)) return $orders[0];
         else throw new \Exception('订单不存在', 404);
     }
+    
+
+    /**
+     * 找用户订单
+     *
+     * @param $order_sn
+     * @return \ApigilityOrder\DoctrineEntity\Order
+     * @throws \Exception
+     */
+    public function getOrdersByUser(User $user)
+    {
+        $orders = $this->em->getRepository('ApigilityOrder\DoctrineEntity\Order')->findBy([
+            'user' => $user->getId(),
+        ]);
+    
+        return $orders;
+    }
 
 }
